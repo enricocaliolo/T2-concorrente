@@ -13,19 +13,19 @@ def tempoParaEntrarNaFila(dados: Dados, pessoa: Pessoa):
     myQueue.put(pessoa)
     print(f"[Pessoa {pessoa.id}/{pessoa.faixa_etaria}] Aguardando na fila.")
     mutex_fila.release()
+    sem_aguarda_chamada.release()
+    pessoa.sem_aguarda_chamada.release()
 
 
 def aguardandoAtracao(pessoa: Pessoa):
-    sem_aguarda_chamada.release()
-
-    sem_entrar_atracao.acquire()
+    pessoa.sem_entrar_atracao.acquire()
     print(f"[Pessoa {pessoa.id}/{pessoa.faixa_etaria}] Entra na Ixfera.")
 
 
 def tempoNaAtracao(dados: Dados, pessoa: Pessoa):
     sleep(dados.permanencia)
 
-    sem_sair_atracao.release()
+    pessoa.sem_sair_atracao.release()
     print(f"[Pessoa {pessoa.id}/{pessoa.faixa_etaria}] Saiu da Ixfera.")
 
 

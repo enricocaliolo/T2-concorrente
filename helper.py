@@ -1,3 +1,4 @@
+from threading import Semaphore
 import random
 
 
@@ -17,6 +18,12 @@ class Pessoa:
     def __init__(self, id, faixa_etaria):
         self.id = id
         self.faixa_etaria = faixa_etaria
+        self.sem_aguarda_chamada = Semaphore(0)
+        self.sem_entrar_atracao = Semaphore(0)
+        self.sem_sair_atracao = Semaphore(0)
+
+    def __str__(self) -> str:
+        return f"Pessoa {self.id}/{self.faixa_etaria}"
 
 
 def getRandomNumber(endInterval):
