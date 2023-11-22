@@ -13,6 +13,7 @@ def tempoParaEntrarNaFila(dados: Dados, pessoa: Pessoa):
     myQueue.put(pessoa)
     print(f"[Pessoa {pessoa.id}/{pessoa.faixa_etaria}] Aguardando na fila.")
     mutex_fila.release()
+
     sem_aguarda_chamada.release()
     pessoa.sem_aguarda_chamada.release()
 

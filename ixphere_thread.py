@@ -1,11 +1,11 @@
-from queue import Queue
 import threading
-from time import sleep
 
 from helper import *
 from global_variables import *
 
 lock = threading.Lock()
+
+sem_pausar_atracao = Semaphore(0)
 
 
 class Ixphere(threading.Thread):
@@ -18,7 +18,7 @@ class Ixphere(threading.Thread):
         self.clientes_na_atracao = []
 
     def esperaCliente(self):
-        sem_aguarda_chamada.acquire()
+        sem_aguarda_chamada.acquire(timeout=self.dados.max_intervalo)
 
         mutex_fila.acquire()
         pessoa: Pessoa = myQueue.get()
@@ -53,5 +53,5 @@ class Ixphere(threading.Thread):
 
     def run(self):
         print("[Ixfera] Simulação iniciada")
-        while self.clientes_atendidos != self.dados.n_pessoas:
+        while self.clientes_atendidos != self.dados.n_vagas:
             self.esperaCliente()
