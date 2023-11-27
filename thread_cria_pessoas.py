@@ -24,7 +24,7 @@ def thread_cria_pessoa(dados: Dados):
 
 def getFaixaEtaria():
     faixa_etaria = ""
-    number = getRandomNumber(100)
+    number = getRandomNumber(31)
 
     if 4 <= number and number <= 11:
         faixa_etaria = "A"

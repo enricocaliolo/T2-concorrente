@@ -2,19 +2,20 @@ import random
 from time import sleep
 
 from helper import *
-from global_variables import *
+import global_variables as gv
 
 
 def tempoParaEntrarNaFila(dados: Dados, pessoa: Pessoa):
     tempo_para_entrar = getRandomNumber(dados.max_intervalo)
+
     sleep(tempo_para_entrar)
 
-    mutex_fila.acquire()
-    myQueue.put(pessoa)
+    gv.mutex_fila.acquire()
+    gv.myQueue.put(pessoa)
     print(f"[Pessoa {pessoa.id}/{pessoa.faixa_etaria}] Aguardando na fila.")
-    mutex_fila.release()
+    gv.mutex_fila.release()
 
-    sem_aguarda_chamada.release()
+    gv.sem_aguarda_chamada.release()
     pessoa.sem_aguarda_chamada.release()
 
 
