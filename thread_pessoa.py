@@ -5,8 +5,13 @@ import global_variables as gv
 
 
 def tempoParaEntrarNaFila(dados: Dados, pessoa: Pessoa):
-    tempo_para_entrar = getRandomNumber(dados.max_intervalo * (dados.unid_tempo / 1000))
+    tempo_maximo = dados.max_intervalo * (dados.unid_tempo / 1000)
 
+    if dados.unid_tempo < 1000:
+        tempo_maximo = 1
+
+    # travou aqui quando o getRandomNumber recebia um valor float
+    tempo_para_entrar = getRandomNumber(tempo_maximo)
     print(f"{pessoa} vai entrar na fila em {tempo_para_entrar} segundos.")
     sleep(tempo_para_entrar)
 

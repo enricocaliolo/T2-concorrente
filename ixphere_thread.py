@@ -59,6 +59,7 @@ class Ixphere(threading.Thread):
             self.clientes_atendidos += 1
             pessoa.sem_entrar_atracao.release()
 
+            # checando se é a última pessoa a entrar na atração
             if self.clientes_atendidos == self.dados.n_pessoas:
                 while gv.pessoas_na_atracao.qsize() != 0:
                     q_pessoa: Pessoa = gv.pessoas_na_atracao.get()
@@ -80,6 +81,7 @@ class Ixphere(threading.Thread):
             self.clientes_atendidos += 1
             pessoa.sem_entrar_atracao.release()
 
+            # checa se é a última pessoa a entrar na atração
             if self.clientes_atendidos == self.dados.n_pessoas:
                 while gv.pessoas_na_atracao.qsize() != 0:
                     q_pessoa: Pessoa = gv.pessoas_na_atracao.get()
