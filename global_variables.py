@@ -20,3 +20,8 @@ def init(n_vagas):
 
     global sem_aguarda_chamada
     sem_aguarda_chamada = threading.Semaphore(0)
+    
+    global ocupado_start
+    global ocupado_end
+    global ocupado_total
+    ocupado_total = 0

@@ -1,12 +1,13 @@
 from sys import argv
 import threading
+import time
+import global_variables as gv
 
 from thread_cria_pessoas import thread_cria_pessoa
 
 from ixphere_thread import Ixphere
 from helper import *
 from global_variables import init
-
 
 def getCLIArguments():
     n_pessoas = int(argv[1])
@@ -32,12 +33,17 @@ def main():
     print(f"[Ixfera] Simulação iniciada.")
     cria_pessoas.start()
     ixphere.start()
+    start_total = time.time()
 
     cria_pessoas.join()
     ixphere.join()
 
     print(f"[Ixfera] Simulação finalizada.")
+    end_total = time.time()
+    tempo_total = end_total - start_total
+    print(f'Tempo total do programa: {tempo_total}')
 
+    print(f'Taxa de ocupacao: {gv.ocupado_total/tempo_total}')
 
 if __name__ == "__main__":
     main()

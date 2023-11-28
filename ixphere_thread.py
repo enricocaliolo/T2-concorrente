@@ -1,6 +1,7 @@
 from itertools import count
 import queue
 import threading
+import time
 
 from helper import *
 import global_variables as gv
@@ -45,7 +46,8 @@ class Ixphere(threading.Thread):
             self.aberto = True
             self.atracao = pessoa.faixa_etaria
             print(f"[Ixfera] Iniciando a experiencia {pessoa.faixa_etaria}")
-
+            gv.ocupado_start = time.time()
+            
         if pessoa.faixa_etaria == self.atracao:
             if gv.pessoas_na_atracao.full():
                 q_pessoa: Pessoa = gv.pessoas_na_atracao.get()
@@ -73,6 +75,7 @@ class Ixphere(threading.Thread):
             self.atracao = pessoa.faixa_etaria
 
             print(f"[Ixfera] Iniciando a experiencia {pessoa.faixa_etaria}")
+            
             gv.pessoas_na_atracao.put(pessoa)
             gv.count_pessoas_na_atracao += 1
             print(
