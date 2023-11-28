@@ -38,12 +38,21 @@ def tempoNaAtracao(dados: Dados, pessoa: Pessoa):
     gv.count_queue -= 1
     print(f"[{pessoa}] Saiu da Ixfera (quantidade = {gv.count_pessoas_na_atracao}).")
 
+    gv.mutex_tempos.acquire()
+    if gv.count_pessoas_na_atracao == 0:
+        if pessoa.faixa_etaria == "A":
+            gv.tempoA = time.time()
+        elif pessoa.faixa_etaria == "B":
+            gv.tempoB = time.time()
+        else:
+            gv.tempoC = time.time()
+    gv.mutex_tempos.release()
+
     gv.mutex_fila.acquire()
     if gv.count_queue == 0 and gv.count_pessoas_na_atracao == 0:
         print(f"[Ixfera] Pausando experiencia {pessoa.faixa_etaria}")
         gv.ocupado_end = time.time()
         gv.ocupado_total += gv.ocupado_end - gv.ocupado_start
-        print(f'Ocupado atual: {gv.ocupado_total}')
     gv.mutex_fila.release()
 
 

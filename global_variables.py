@@ -25,3 +25,20 @@ def init(n_vagas):
     global ocupado_end
     global ocupado_total
     ocupado_total = 0
+    
+    global tempos_medios
+
+    tempos_medios = {
+        "A": [0, 0],
+        "B": [0, 0],
+        "C": [0, 0]
+    }
+    
+    global tempoA
+    global tempoB
+    global tempoC
+    
+    global mutex_tempos
+    mutex_tempos = threading.Lock()
+    
+    

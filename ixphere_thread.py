@@ -18,6 +18,9 @@ class Ixphere(threading.Thread):
         self.atracao = ""
         self.aberto = False
         self.clientes_atendidos = 0
+        self.fim_do_A = 0
+        self.fim_do_B = 0
+        self.fim_do_C = 0
 
     def esperaCliente(self):
         gv.sem_aguarda_chamada.acquire(timeout=self.dados.max_intervalo)
@@ -46,7 +49,9 @@ class Ixphere(threading.Thread):
             self.aberto = True
             self.atracao = pessoa.faixa_etaria
             print(f"[Ixfera] Iniciando a experiencia {pessoa.faixa_etaria}")
-            gv.ocupado_start = time.time()
+            gv.ocupado_start = time.time()    
+            self.calculaTempo(pessoa.faixa_etaria)
+
             
         if pessoa.faixa_etaria == self.atracao:
             if gv.pessoas_na_atracao.full():
@@ -75,6 +80,7 @@ class Ixphere(threading.Thread):
             self.atracao = pessoa.faixa_etaria
 
             print(f"[Ixfera] Iniciando a experiencia {pessoa.faixa_etaria}")
+            self.calculaTempo(pessoa.faixa_etaria)
             
             gv.pessoas_na_atracao.put(pessoa)
             gv.count_pessoas_na_atracao += 1
@@ -90,6 +96,22 @@ class Ixphere(threading.Thread):
                     q_pessoa: Pessoa = gv.pessoas_na_atracao.get()
                     q_pessoa.sem_sair_atracao.acquire()
 
+    def calculaTempo(self, faixa):
+        if faixa == "A":
+            self.fim_do_A = time.time()
+            gv.tempos_medios["A"][0] += self.fim_do_A - gv.tempoA
+            gv.tempos_medios["A"][1] += 1
+        elif faixa == "B":
+            self.fim_do_B = time.time()
+            gv.tempos_medios["B"][0] += self.fim_do_B - gv.tempoB
+            gv.tempos_medios["B"][1] += 1
+        else:
+            self.fim_do_C = time.time()
+            gv.tempos_medios["C"][0] += self.fim_do_C - gv.tempoC
+            gv.tempos_medios["C"][1] += 1
+            
+        
+        
     def run(self):
         # print("[Ixfera] Simulação iniciada")
         while self.clientes_atendidos != self.dados.n_pessoas:
