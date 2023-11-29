@@ -33,9 +33,15 @@ def tempoNaAtracao(dados: Dados, pessoa: Pessoa):
     sleep(dados.permanencia)
 
     pessoa.sem_sair_atracao.release()
+
+    gv.mutex_count_pessoas_na_atracao.acquire()
     gv.count_pessoas_na_atracao -= 1
-    gv.count_queue -= 1
     print(f"[{pessoa}] Saiu da Ixfera (quantidade = {gv.count_pessoas_na_atracao}).")
+    gv.mutex_count_pessoas_na_atracao.release()
+
+    gv.mutex_fila.acquire()
+    gv.count_queue -= 1
+    gv.mutex_fila.release()
 
     gv.mutex_fila.acquire()
     if gv.count_queue == 0 and gv.count_pessoas_na_atracao == 0:

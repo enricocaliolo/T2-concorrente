@@ -30,11 +30,6 @@ class Ixphere(threading.Thread):
                 q_pessoa: Pessoa = gv.pessoas_na_atracao.get()
                 q_pessoa.sem_sair_atracao.acquire()
 
-                # gv.mutex_fila.acquire()
-                # if not gv.myQueue.qsize() != 0:
-                #     print(f"Pausando experiencia {self.atracao}")
-                # gv.sem_aguarda_chamada.acquire()
-
         gv.mutex_fila.acquire()
         pessoa: Pessoa = gv.myQueue.get()
         gv.mutex_fila.release()
@@ -52,10 +47,12 @@ class Ixphere(threading.Thread):
                 q_pessoa.sem_sair_atracao.acquire()
 
             gv.pessoas_na_atracao.put(pessoa)
+            gv.mutex_count_pessoas_na_atracao.acquire()
             gv.count_pessoas_na_atracao += 1
             print(
                 f"[{pessoa}] Entra na Ixfera (quantidade = {gv.count_pessoas_na_atracao})."
             )
+            gv.mutex_count_pessoas_na_atracao.release()
             self.clientes_atendidos += 1
             pessoa.sem_entrar_atracao.release()
 
@@ -74,10 +71,12 @@ class Ixphere(threading.Thread):
 
             print(f"[Ixfera] Iniciando a experiencia {pessoa.faixa_etaria}")
             gv.pessoas_na_atracao.put(pessoa)
+            gv.mutex_count_pessoas_na_atracao.acquire()
             gv.count_pessoas_na_atracao += 1
             print(
                 f"[{pessoa}] Entra na Ixfera (quantidade = {gv.count_pessoas_na_atracao})."
             )
+            gv.mutex_count_pessoas_na_atracao.release()
             self.clientes_atendidos += 1
             pessoa.sem_entrar_atracao.release()
 

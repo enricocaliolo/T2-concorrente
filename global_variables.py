@@ -6,6 +6,9 @@ def init(n_vagas):
     global myQueue
     myQueue = Queue()
 
+    global mutex_fila
+    mutex_fila = threading.Lock()
+
     global count_queue
     count_queue = 0
 
@@ -15,8 +18,8 @@ def init(n_vagas):
     global count_pessoas_na_atracao
     count_pessoas_na_atracao = 0
 
-    global mutex_fila
-    mutex_fila = threading.Lock()
+    global mutex_count_pessoas_na_atracao
+    mutex_count_pessoas_na_atracao = threading.Lock()
 
     global sem_aguarda_chamada
     sem_aguarda_chamada = threading.Semaphore(0)
