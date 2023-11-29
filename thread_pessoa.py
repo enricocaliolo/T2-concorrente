@@ -42,8 +42,10 @@ def tempoNaAtracao(dados: Dados, pessoa: Pessoa):
             gv.count_queue -= 1
             if gv.count_queue == 0 and gv.count_pessoas_na_atracao == 0:
                 print(f"[Ixfera] Pausando experiência {pessoa.faixa_etaria}")
-                gv.ocupado_total += time.time() - gv.ocupado_start
-                gv.ocupado_start = 0
+                
+                if gv.ocupado_start != 0:
+                    gv.ocupado_total += time.time() - gv.ocupado_start
+                    gv.ocupado_start = 0
 
 
 

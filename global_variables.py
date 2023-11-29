@@ -29,9 +29,9 @@ def init():
     global tempos_medios
 
     tempos_medios = {
-        "A": [0, 0],
-        "B": [0, 0],
-        "C": [0, 0]
+        "A": [0.0, 0.0],
+        "B": [0.0, 0.0],
+        "C": [0.0, 0.0],
     }
     
     global tempoA

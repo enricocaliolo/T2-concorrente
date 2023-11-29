@@ -76,8 +76,8 @@ def main():
         media_C = gv.tempos_medios["C"][0]/gv.tempos_medios["C"][1]
         print('Faixa C: {:.2f} ms'.format(media_C * 1000))
     
-    print('Taxa de ocupacao: {:.2f}%'.format(gv.ocupado_total/tempo_total * 100))
-    # print(f'Tempo total: {tempo_total}')
+    print('Taxa de ocupacao: {:.2f}%'.format((gv.ocupado_total/tempo_total) * 100))
+    print(f'Tempo total: {tempo_total}')
 
 
 if __name__ == "__main__":
