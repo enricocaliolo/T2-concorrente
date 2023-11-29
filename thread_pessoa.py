@@ -1,3 +1,4 @@
+import time
 from time import sleep
 
 from helper import *
@@ -39,8 +40,17 @@ def tempoNaAtracao(dados: Dados, pessoa: Pessoa):
         print(f"[{pessoa}] Saiu da Ixfera (quantidade = {gv.count_pessoas_na_atracao}).")
         with gv.mutex_fila:
             gv.count_queue -= 1
+            if gv.count_pessoas_na_atracao == 0:
+                if pessoa.faixa_etaria == "A":
+                    gv.tempoA = time.time()
+                elif pessoa.faixa_etaria == "B":
+                    gv.tempoB = time.time()
+                else:
+                    gv.tempoC = time.time()
             if gv.count_queue == 0 and gv.count_pessoas_na_atracao == 0:
                 print(f"[Ixfera] Pausando experiencia {pessoa.faixa_etaria}")
+                gv.ocupado_end = time.time()
+                gv.ocupado_total += gv.ocupado_end - gv.ocupado_start
 
 
 
