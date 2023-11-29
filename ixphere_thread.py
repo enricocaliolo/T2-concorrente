@@ -19,7 +19,7 @@ class Ixphere(threading.Thread):
         self.clientes_atendidos = 0
 
     def esperaCliente(self):
-        gv.sem_aguarda_chamada.acquire(timeout=self.dados.max_intervalo)
+        gv.sem_aguarda_chamada.acquire()
 
         gv.mutex_fila.acquire()
         queue_size = gv.myQueue.qsize()
