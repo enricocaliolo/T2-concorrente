@@ -17,7 +17,7 @@ def tempoParaEntrarNaFila(dados: Dados, pessoa: Pessoa):
 
     with gv.mutex_fila:
         gv.fila_entrada.put(pessoa)
-        # gv.count_queue += 1
+        gv.count_queue += 1
         print(f"[Pessoa {pessoa.id}/{pessoa.faixa_etaria}] Aguardando na fila.")
 
     gv.sem_aguarda_chamada.release()
@@ -32,12 +32,15 @@ def tempoNaAtracao(dados: Dados, pessoa: Pessoa):
     sleep(dados.permanencia)
 
     pessoa.sem_sair_atracao.release()
+    
 
     with gv.mutex_count_pessoas_na_atracao:
         gv.count_pessoas_na_atracao -= 1
         print(f"[{pessoa}] Saiu da Ixfera (quantidade = {gv.count_pessoas_na_atracao}).")
-        if gv.count_pessoas_na_atracao == 0:
-            print(f"[Ixfera] Pausando experiencia {pessoa.faixa_etaria}")
+        with gv.mutex_fila:
+            gv.count_queue -= 1
+            if gv.count_queue == 0 and gv.count_pessoas_na_atracao == 0:
+                print(f"[Ixfera] Pausando experiencia {pessoa.faixa_etaria}")
 
 
 
