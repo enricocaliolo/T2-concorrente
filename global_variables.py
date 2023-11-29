@@ -2,18 +2,12 @@ import threading
 from queue import Queue
 
 
-def init(n_vagas):
-    global myQueue
-    myQueue = Queue()
+def init():
+    global fila_entrada
+    fila_entrada = Queue()
 
     global mutex_fila
     mutex_fila = threading.Lock()
-
-    global count_queue
-    count_queue = 0
-
-    global pessoas_na_atracao
-    pessoas_na_atracao = Queue(maxsize=n_vagas)
 
     global count_pessoas_na_atracao
     count_pessoas_na_atracao = 0

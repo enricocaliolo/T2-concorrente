@@ -22,7 +22,7 @@ def getCLIArguments():
 def main():
     dados = getCLIArguments()
 
-    init(dados.n_vagas)
+    init()
 
     # random.seed(dados.semente)
 
