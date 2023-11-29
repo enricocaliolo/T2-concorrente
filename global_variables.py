@@ -33,7 +33,4 @@ def init():
         "B": [0.0, 0.0],
         "C": [0.0, 0.0],
     }
-    
-    global tempoA
-    global tempoB
-    global tempoC
+
