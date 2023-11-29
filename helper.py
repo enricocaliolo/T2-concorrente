@@ -21,6 +21,7 @@ class Pessoa:
         self.sem_aguarda_chamada = Semaphore(0)
         self.sem_entrar_atracao = Semaphore(0)
         self.sem_sair_atracao = Semaphore(0)
+        self.tempo_entrou_na_fila = 0
 
     def __str__(self) -> str:
         return f"Pessoa {self.id}/{self.faixa_etaria}"

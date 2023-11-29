@@ -20,3 +20,20 @@ def init():
 
     global sem_aguarda_chamada
     sem_aguarda_chamada = threading.Semaphore(0)
+    
+    global ocupado_start
+    global ocupado_total
+    ocupado_total = 0
+    ocupado_start = 0
+    
+    global tempos_medios
+
+    tempos_medios = {
+        "A": [0, 0],
+        "B": [0, 0],
+        "C": [0, 0]
+    }
+    
+    global tempoA
+    global tempoB
+    global tempoC

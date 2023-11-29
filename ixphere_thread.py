@@ -1,6 +1,6 @@
 import threading
 from queue import Queue
-from time import sleep
+import time
 
 from helper import *
 import global_variables as gv
@@ -22,7 +22,9 @@ class Ixphere(threading.Thread):
     def iniciaAtracao(self, pessoa: Pessoa):
         self.aberto = True
         self.atracao = pessoa.faixa_etaria
-        print(f"[Ixfera] Iniciando a experiencia {pessoa.faixa_etaria}")
+        print(f"[Ixfera] Iniciando a experiência {pessoa.faixa_etaria}")
+        if gv.ocupado_start == 0:
+            gv.ocupado_start = time.time()
 
     def entrarNaEsfera(self, pessoa: Pessoa):
         if self.pessoas_na_atracao.full():
@@ -35,8 +37,12 @@ class Ixphere(threading.Thread):
             print(
                 f"[{pessoa}] Entra na Ixfera (quantidade = {gv.count_pessoas_na_atracao})."
             )
+            tempo_final = time.time()
+            gv.tempos_medios[pessoa.faixa_etaria][0] += tempo_final - pessoa.tempo_entrou_na_fila
+            gv.tempos_medios[pessoa.faixa_etaria][1] += 1
+            
             pessoa.sem_entrar_atracao.release()
-            sleep(0.1)
+            time.sleep(0.1)
 
         self.clientes_atendidos += 1
 

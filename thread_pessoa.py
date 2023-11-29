@@ -1,4 +1,4 @@
-from time import sleep
+import time
 
 from helper import *
 import global_variables as gv
@@ -13,12 +13,13 @@ def tempoParaEntrarNaFila(dados: Dados, pessoa: Pessoa):
     # travou aqui quando o getRandomNumber recebia um valor float
     tempo_para_entrar = getRandomNumber(tempo_maximo)
     # print(f"{pessoa} vai entrar na fila em {tempo_para_entrar} segundos.")
-    sleep(tempo_para_entrar)
+    time.sleep(tempo_para_entrar)
 
     with gv.mutex_fila:
         gv.fila_entrada.put(pessoa)
         gv.count_queue += 1
         print(f"[Pessoa {pessoa.id}/{pessoa.faixa_etaria}] Aguardando na fila.")
+        pessoa.tempo_entrou_na_fila = time.time()
 
     gv.sem_aguarda_chamada.release()
     pessoa.sem_aguarda_chamada.release()
@@ -29,18 +30,20 @@ def aguardandoAtracao(pessoa: Pessoa):
 
 
 def tempoNaAtracao(dados: Dados, pessoa: Pessoa):
-    sleep(dados.permanencia)
+    time.sleep(dados.permanencia)
 
     pessoa.sem_sair_atracao.release()
     
 
     with gv.mutex_count_pessoas_na_atracao:
         gv.count_pessoas_na_atracao -= 1
-        print(f"[{pessoa}] Saiu da Ixfera (quantidade = {gv.count_pessoas_na_atracao}).")
+        print(f"[{pessoa}] Saiu da Ixfera (quantidade = {gv.count_pessoas_na_atracao}).")    
         with gv.mutex_fila:
             gv.count_queue -= 1
             if gv.count_queue == 0 and gv.count_pessoas_na_atracao == 0:
-                print(f"[Ixfera] Pausando experiencia {pessoa.faixa_etaria}")
+                print(f"[Ixfera] Pausando experiência {pessoa.faixa_etaria}")
+                gv.ocupado_total += time.time() - gv.ocupado_start
+                gv.ocupado_start = 0
 
 
 
