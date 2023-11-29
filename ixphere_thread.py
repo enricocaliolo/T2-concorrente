@@ -17,31 +17,13 @@ class Ixphere(threading.Thread):
         self.atracao = ""
         self.aberto = False
         self.clientes_atendidos = 0
-
-    def esperaCliente(self):
-        gv.sem_aguarda_chamada.acquire()
-
-        gv.mutex_fila.acquire()
-        queue_size = gv.myQueue.qsize()
-        gv.mutex_fila.release()
-
-        if queue_size == 0:
-            if gv.pessoas_na_atracao.qsize() != 0:
-                q_pessoa: Pessoa = gv.pessoas_na_atracao.get()
-                q_pessoa.sem_sair_atracao.acquire()
-
-        gv.mutex_fila.acquire()
-        pessoa: Pessoa = gv.myQueue.get()
-        gv.mutex_fila.release()
-
-        pessoa.sem_aguarda_chamada.acquire()
-
-        if not self.aberto:
-            self.aberto = True
-            self.atracao = pessoa.faixa_etaria
-            print(f"[Ixfera] Iniciando a experiencia {pessoa.faixa_etaria}")
-
-        if pessoa.faixa_etaria == self.atracao:
+        
+    def iniciaAtracao(self, pessoa: Pessoa):
+        self.aberto = True
+        self.atracao = pessoa.faixa_etaria
+        print(f"[Ixfera] Iniciando a experiencia {pessoa.faixa_etaria}")
+        
+    def entrarNaEsfera(self, pessoa: Pessoa):
             if gv.pessoas_na_atracao.full():
                 q_pessoa: Pessoa = gv.pessoas_na_atracao.get()
                 q_pessoa.sem_sair_atracao.acquire()
@@ -61,30 +43,34 @@ class Ixphere(threading.Thread):
                 while gv.pessoas_na_atracao.qsize() != 0:
                     q_pessoa: Pessoa = gv.pessoas_na_atracao.get()
                     q_pessoa.sem_sair_atracao.acquire()
+                    
+    def aguardarAtracaoAcabar(self, pessoa: Pessoa):
+        while gv.pessoas_na_atracao.qsize() != 0:
+            q_pessoa: Pessoa = gv.pessoas_na_atracao.get()
+            q_pessoa.sem_sair_atracao.acquire()
 
-        else:
-            while gv.pessoas_na_atracao.qsize() != 0:
+    def esperaCliente(self):
+        gv.sem_aguarda_chamada.acquire()
+
+        gv.mutex_fila.acquire()
+        if gv.myQueue.qsize() == 0:
+            if gv.pessoas_na_atracao.qsize() != 0:
                 q_pessoa: Pessoa = gv.pessoas_na_atracao.get()
                 q_pessoa.sem_sair_atracao.acquire()
 
-            self.atracao = pessoa.faixa_etaria
+        pessoa: Pessoa = gv.myQueue.get()
+        gv.mutex_fila.release()
 
-            print(f"[Ixfera] Iniciando a experiencia {pessoa.faixa_etaria}")
-            gv.pessoas_na_atracao.put(pessoa)
-            gv.mutex_count_pessoas_na_atracao.acquire()
-            gv.count_pessoas_na_atracao += 1
-            print(
-                f"[{pessoa}] Entra na Ixfera (quantidade = {gv.count_pessoas_na_atracao})."
-            )
-            gv.mutex_count_pessoas_na_atracao.release()
-            self.clientes_atendidos += 1
-            pessoa.sem_entrar_atracao.release()
+        pessoa.sem_aguarda_chamada.acquire()
 
-            # checa se é a última pessoa a entrar na atração
-            if self.clientes_atendidos == self.dados.n_pessoas:
-                while gv.pessoas_na_atracao.qsize() != 0:
-                    q_pessoa: Pessoa = gv.pessoas_na_atracao.get()
-                    q_pessoa.sem_sair_atracao.acquire()
+        if not self.aberto:
+            self.iniciaAtracao(pessoa)
+        if pessoa.faixa_etaria == self.atracao:
+           self.entrarNaEsfera(pessoa)
+        else:
+            self.aguardarAtracaoAcabar(pessoa)
+            self.iniciaAtracao(pessoa)
+            self.entrarNaEsfera(pessoa)
 
     def run(self):
         # print("[Ixfera] Simulação iniciada")
