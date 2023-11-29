@@ -36,7 +36,7 @@ def main():
 
     gv.init()
 
-    # random.seed(dados.semente)
+    random.seed(dados.semente)
 
     ixphere = Ixphere(dados=dados)
     cria_pessoas = threading.Thread(target=thread_cria_pessoa, args=[dados])
@@ -50,7 +50,7 @@ def main():
     ixphere.join()
 
     print(f"[Ixfera] Simulação finalizada.")
-    
+
     end_total = time.time()
     tempo_total = end_total - start_total
 
@@ -58,25 +58,22 @@ def main():
     if gv.tempos_medios["A"][1] == 0:
         print("Faixa A: Não houveram pessoas dessa faixa etaria.")
     else:
-        media_A = gv.tempos_medios["A"][0]/gv.tempos_medios["A"][1]
-        print('Faixa A: {:.2f}'.format(media_A * 1000))
-        
-        
+        media_A = gv.tempos_medios["A"][0] / gv.tempos_medios["A"][1]
+        print("Faixa A: {:.2f}".format(media_A * 1000))
+
     if gv.tempos_medios["B"][1] == 0:
         print("Faixa B: Não houveram pessoas dessa faixa etaria.")
     else:
-        media_B = gv.tempos_medios["B"][0]/gv.tempos_medios["B"][1]
-        print('Faixa B: {:.2f}'.format(media_B * 1000))
-        
-        
-        
+        media_B = gv.tempos_medios["B"][0] / gv.tempos_medios["B"][1]
+        print("Faixa B: {:.2f}".format(media_B * 1000))
+
     if gv.tempos_medios["C"][1] == 0:
         print("Faixa C: Não houveram pessoas dessa faixa etaria.")
     else:
-        media_C = gv.tempos_medios["C"][0]/gv.tempos_medios["C"][1]
-        print('Faixa C: {:.2f}'.format(media_C * 1000))
-    
-    print('Taxa de ocupacao: {:.2f}'.format((gv.ocupado_total/tempo_total)))
+        media_C = gv.tempos_medios["C"][0] / gv.tempos_medios["C"][1]
+        print("Faixa C: {:.2f}".format(media_C * 1000))
+
+    print("Taxa de ocupacao: {:.2f}".format((gv.ocupado_total / tempo_total)))
 
 
 if __name__ == "__main__":
