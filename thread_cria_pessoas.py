@@ -24,18 +24,13 @@ def thread_cria_pessoa(dados: Dados):
 
 def getFaixaEtaria():
     faixa_etaria = ""
-    number = getRandomNumber(31)
+    number = getRandomNumber(3)
 
-    if 4 <= number and number <= 11:
+    if number == 1:
         faixa_etaria = "A"
-
-    elif 12 <= number and number <= 18:
+    elif number == 2:
         faixa_etaria = "B"
-
-    elif number >= 19:
+    elif number == 3:
         faixa_etaria = "C"
-
-    else:
-        faixa_etaria = "B"
 
     return faixa_etaria
