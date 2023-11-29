@@ -59,14 +59,14 @@ def main():
         print("Faixa A: Não houveram pessoas dessa faixa etaria.")
     else:
         media_A = gv.tempos_medios["A"][0]/gv.tempos_medios["A"][1]
-        print('Faixa A: {:.2f} ms'.format(media_A * 1000))
+        print('Faixa A: {:.2f}'.format(media_A * 1000))
         
         
     if gv.tempos_medios["B"][1] == 0:
         print("Faixa B: Não houveram pessoas dessa faixa etaria.")
     else:
         media_B = gv.tempos_medios["B"][0]/gv.tempos_medios["B"][1]
-        print('Faixa B: {:.2f} ms'.format(media_B * 1000))
+        print('Faixa B: {:.2f}'.format(media_B * 1000))
         
         
         
@@ -74,10 +74,9 @@ def main():
         print("Faixa C: Não houveram pessoas dessa faixa etaria.")
     else:
         media_C = gv.tempos_medios["C"][0]/gv.tempos_medios["C"][1]
-        print('Faixa C: {:.2f} ms'.format(media_C * 1000))
+        print('Faixa C: {:.2f}'.format(media_C * 1000))
     
-    print('Taxa de ocupacao: {:.2f}%'.format((gv.ocupado_total/tempo_total) * 100))
-    print(f'Tempo total: {tempo_total}')
+    print('Taxa de ocupacao: {:.2f}'.format((gv.ocupado_total/tempo_total)))
 
 
 if __name__ == "__main__":
